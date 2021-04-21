@@ -9,8 +9,8 @@ Some of my favorite radio stations are owned by iHeartRadio, notably: *Radio 104
 
 Two playlists I run can be found here as a demonstration:
 
-* (Radio 104.5 - Philadelphia's Alternative Rock)[https://open.spotify.com/playlist/3GvVJRnFtGZdYqfkLB49fP?si=97f23e858fd048e9]
-* (Q102 - Philly's #1 Hit Music Station)[https://open.spotify.com/playlist/1uDMEEZiz9gN3AyQEfWLjN?si=c2f9fe4b94bd4e79]
+* [Radio 104.5 - Philadelphia's Alternative Rock](https://open.spotify.com/playlist/3GvVJRnFtGZdYqfkLB49fP?si=97f23e858fd048e9)
+* [Q102 - Philly's #1 Hit Music Station](https://open.spotify.com/playlist/1uDMEEZiz9gN3AyQEfWLjN?si=c2f9fe4b94bd4e79)
 
 
 ## How to use
