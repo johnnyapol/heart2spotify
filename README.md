@@ -17,6 +17,8 @@ Two playlists I run can be found here as a demonstration:
 
 Documentation will be improved as I have more time. For now, see `config.json.sample` for configuring the progrma. Configurations should be saved as `config.json`.
 
+One key caveat is this program is currently not a daemon for simplicitly reasons. It simply synchronizes on run and stops. I currently use systemd timers or cron to automate running it. On Windows, the task scheduler would probably be sufficient.
+
 ## Requirements
 
 Python 3.6+
