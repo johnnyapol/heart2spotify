@@ -1,3 +1,9 @@
+"""
+    Copyright (c) 2021 John C. Allwein 'johnnyapol'.
+    For Licensing information, See LICENSE.txt
+"""
+
+
 class CacheManager:
     def __init__(self):
         pass

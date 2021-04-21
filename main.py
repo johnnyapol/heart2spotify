@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+    Copyright (c) 2021 John C. Allwein 'johnnyapol'.
+    For Licensing information, See LICENSE.txt
+"""
 
 from bs4 import BeautifulSoup
 import spotipy
