@@ -1,0 +1,17 @@
+{
+    "client_id": "SPOTIFY-CLIENT-ID-HERE",
+    "client_secret": "SPOTIFY-CLEINT-SECRET-HERE",
+    "stations":
+    {
+        "Radio 104.5":
+        {
+            "playlist_url": "https://open.spotify.com/playlist/3GvVJRnFtGZdYqfkLB49fP?si=903185362937461f",
+            "recent_link": "https://alt1045philly.iheart.com/music/recently-played/"
+        },
+        "Q102":
+        {
+            "playlist_url": "https://open.spotify.com/playlist/1uDMEEZiz9gN3AyQEfWLjN?si=3a4910d1361f4b4f",
+            "recent_link": "https://q102.iheart.com/music/recently-played/"
+        }
+    }
+}

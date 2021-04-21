@@ -5,8 +5,8 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 from urllib.parse import quote_plus
 from requests import get
-from pickle import loads, dumps
 from traceback import print_exc
+import json
 
 
 def get_songs(recent_link):
@@ -22,22 +22,7 @@ def get_songs(recent_link):
         yield (title, album, artist)
 
 
-def get_cache():
-    try:
-        with open(".songcache", "rb") as f:
-            return loads(f.read())
-    except:
-        return set()
-
-
-def save(cache):
-    with open(".songcache", "wb") as f:
-        f.write(dumps(cache))
-
-
-def spotify():
-    cache = get_cache()
-    from secret import client_id, client_secret, playlist, recent_link
+def spotify(client_id, client_secret, stations, cache):
 
     sp = spotipy.Spotify(
         auth_manager=SpotifyOAuth(
@@ -47,26 +32,81 @@ def spotify():
             scope="playlist-modify-public",
         )
     )
-    l = set()
-    for x in get_songs(recent_link):
-        result = sp.search(
-            f"track:{x[0]} album:{x[1]} artist:{x[2]}", type="track", limit=1
-        )
+
+    for station in stations:
+        print(f"Processing station: {station}")
+        playlist = stations[station]["playlist_url"]
+        recent_link = stations[station]["recent_link"]
+
         try:
-            l.add(result["tracks"]["items"][0]["id"])
+            l = set()
+            for x in get_songs(recent_link):
+                print(x)
+                result = sp.search(
+                    f"track:{x[0]} album:{x[1]} artist:{x[2]}", type="track", limit=1
+                )
+                try:
+                    l.add(result["tracks"]["items"][0]["id"])
+                except:
+                    print_exc()
+                    print(f"Failed to find a matching song for {x}")
+
+            l = cache.update(station, l)
+
+            if len(l) == 0:
+                print("No new songs")
+                continue
+
+            sp.playlist_add_items(playlist, l)
         except:
+            print(f"Error encountered while updating station {station}")
             print_exc()
-            print("Failed to handle ", x)
 
-    l = l - cache
-    if len(l) == 0:
-        print("No new songs")
-        return
-    cache = cache | l
-    save(cache)
 
-    sp.playlist_add_items(playlist, l)
+def load_config():
+    try:
+        with open("config.json", "r") as cfg_file:
+            config = json.load(cfg_file)
+    except:
+        print(
+            "Failed to handle configuration file. See config.json.sample for instructions"
+        )
+        print_exc()
+        exit(1)
+
+    # Configuration validation
+    if "client_id" not in config:
+        print("Missing client ID -- exiting!")
+        exit(1)
+
+    if "client_secret" not in config:
+        print("Missing client secret -- exiting!")
+        exit(1)
+
+    if "stations" not in config or len(config["stations"]) == 0:
+        print("No stations specified. No work to be done.")
+        exit(0)
+
+    # Validate each station:
+    for station in config["stations"]:
+        data = config["stations"][station]
+
+        if "playlist_url" not in data:
+            print(
+                f"Station configuration is invalid: playlist_url is missing from station {station}"
+            )
+            exit(1)
+        if "recent_link" not in data:
+            print(
+                f"Station configuration is invalid: recent_link is missing from station {station}"
+            )
+            exit(1)
+
+    return (config["client_id"], config["client_secret"], config["stations"])
 
 
 if __name__ == "__main__":
-    spotify()
+    from cache_manager import FlatfileCacheManager
+
+    id, secret, stations = load_config()
+    spotify(id, secret, stations, FlatfileCacheManager())
